@@ -31,9 +31,13 @@
 
     <div class="col-12 my-3">
         <div class="card">
-            <div class="col-6 my-5">
-                <label for="search">Search</label>
-                <input type="search" placeholder="search" class="form-control">
+            <div class="col-md-6 my-5">
+                <form class="d-flex flex-row justify-content-around" action="{{ route('home.search') }}" method="post">
+                    @csrf
+                    <input type="search" placeholder="search" name="search" class="mr-5 form-control">
+                    <button type="submit" class="btn btn-primary btn-sm">Search</button>
+                    <a href="{{ route('home') }}" class="btn btn-warning btn-sm mx-2">Reload</a>
+                </form>
             </div>
             <div class="card-body row">
                 <div class="col-md-8">
@@ -47,23 +51,37 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @if(empty($data['profs']->first()))
+                            <div class="alert alert-warning">
+                                No prof matches these criteria
+                            </div>
+                            @endif
+
                             @foreach($data['profs'] as $prof)
-                                <tr>
-                                    <td>{{ $prof->nom_complet }}</td>
-                                    <td>{{ $prof->email }}</td>
-                                    <td>
-                                        <span
-                                            class="badge {{ isset($prof->matiere) ? 'badge-success' : 'badge-danger' }}">
-                                            {{ isset($prof->matiere) ? $prof->matiere->nom : 'Sans Matiere' }}
-                                        </span>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    <a href="{{ route('professeur.show',['id'=>$prof->id]) }}">
+                                        {{ $prof->nom_complet }}
+                                    </a>
+                                </td>
+                                <td>{{ $prof->email }}</td>
+                                <td>
+                                    <span class="badge {{ isset($prof->matiere) ? 'badge-success' : 'badge-danger' }}">
+                                        {{ isset($prof->matiere) ? $prof->matiere->nom : 'Sans Matiere' }}
+                                    </span>
+                                </td>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
                 <div class="col-md-4">
                     <h4>Matiere Table</h4>
+                    @if(empty($data['matiere']->first()))
+                    <div class="alert alert-warning">
+                        No Matiere matches these criteria
+                    </div>
+                    @endif
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -74,11 +92,11 @@
                         </thead>
                         <tbody>
                             @foreach($data['matiere'] as $matiere)
-                                <tr>
-                                    <td>{{ $matiere->id }}</td>
-                                    <td>{{ $matiere->nom }}</td>
-                                    <td><strong>{{ $matiere->prix }}</strong> DH</td>
-                                </tr>
+                            <tr>
+                                <td>{{ $matiere->id }}</td>
+                                <td>{{ $matiere->nom }}</td>
+                                <td><strong>{{ $matiere->prix }}</strong> DH</td>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>

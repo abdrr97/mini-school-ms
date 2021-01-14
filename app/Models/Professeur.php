@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Professeur extends Model
 {
-    use HasFactory;
+    use  HasFactory;
 
     protected $fillable = [
         'nom_complet',

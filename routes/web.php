@@ -25,8 +25,10 @@ Route::get('/', function ()
 });
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::post('/home', [HomeController::class, 'search'])->name('home.search');
 
-Route::prefix('/professeurs/')->group(function () {
+Route::prefix('/professeurs/')->group(function ()
+{
     Route::get('', [ProfesseurController::class, 'index'])->name('professeur.list');
     Route::get('create', [ProfesseurController::class, 'create'])->name('professeur.create');
     Route::post('create', [ProfesseurController::class, 'store'])->name('professeur.store');
@@ -36,7 +38,8 @@ Route::prefix('/professeurs/')->group(function () {
     Route::get('{id}', [ProfesseurController::class, 'show'])->name('professeur.show');
 });
 
-Route::prefix('/matieres/')->group(function () {
+Route::prefix('/matieres/')->group(function ()
+{
     Route::get('', [MatiereController::class, 'index'])->name('matiere.list');
     Route::get('create', [MatiereController::class, 'create'])->name('matiere.create');
     Route::post('create', [MatiereController::class, 'store'])->name('matiere.store');

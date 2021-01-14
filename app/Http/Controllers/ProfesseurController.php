@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 
 class ProfesseurController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth');
     }
     /**
@@ -19,7 +20,7 @@ class ProfesseurController extends Controller
     public function index()
     {
         $professeur = new Professeur();
-        $profs = $professeur->orderBy('created_at','DESC')->paginate(4);
+        $profs = $professeur->orderBy('created_at', 'DESC')->paginate(4);
 
         return view('professeur.index', compact('profs'));
     }
@@ -107,7 +108,7 @@ class ProfesseurController extends Controller
         $professeur->matiere_id = $matiere->id;
 
         $professeur->save();
-        return redirect()->route('professeur.list')->with('success','proffesseur a ete modifie');
+        return redirect()->route('professeur.list')->with('success', 'proffesseur a ete modifie');
     }
 
     /**
@@ -120,6 +121,6 @@ class ProfesseurController extends Controller
     {
         $professeur = Professeur::findOrFail($id);
         $professeur->delete();
-        return redirect()->route('professeur.list')->with('success','proffesseur a ete supprime');
+        return redirect()->route('professeur.list')->with('success', 'proffesseur a ete supprime');
     }
 }
