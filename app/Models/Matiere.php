@@ -18,4 +18,9 @@ class Matiere extends Model
     {
         return $this->hasMany(Professeur::class);
     }
+
+    public function etudiants()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }
