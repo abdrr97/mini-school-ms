@@ -13,6 +13,7 @@ class CreateProfesseursTable extends Migration
      */
     public function up()
     {
+        // Schema::enableForeignKeyConstraints();
         Schema::create('professeurs', function (Blueprint $table)
         {
             $table->id();
@@ -23,9 +24,7 @@ class CreateProfesseursTable extends Migration
             $table->string('email');
             $table->string('tele');
             $table->timestamps();
-
-            $table->bigInteger('matiere_id')->unsigned()->index()->nullable();
-            // $table->foreign('matiere_id')->references('id')->on('matieres');
+            $table->foreignId('matiere_id')->constrained();
         });
     }
 

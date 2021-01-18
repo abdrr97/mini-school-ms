@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EtudiantController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -46,4 +47,14 @@ Route::prefix('/matieres/')->group(function ()
     Route::get('{id}/edit', [MatiereController::class, 'edit'])->name('matiere.edit');
     Route::put('{id}/edit', [MatiereController::class, 'update'])->name('matiere.update');
     Route::delete('{id}', [MatiereController::class, 'destroy'])->name('matiere.delete');
+});
+
+Route::prefix('/etudiants/')->group(function ()
+{
+    Route::get('', [EtudiantController::class, 'index'])->name('etudiant.list');
+    Route::get('create', [EtudiantController::class, 'create'])->name('etudiant.create');
+    Route::post('create', [EtudiantController::class, 'store'])->name('etudiant.store');
+    Route::get('{id}/edit', [EtudiantController::class, 'edit'])->name('etudiant.edit');
+    Route::put('{id}/edit', [EtudiantController::class, 'update'])->name('etudiant.update');
+    Route::delete('{id}', [EtudiantController::class, 'destroy'])->name('etudiant.delete');
 });

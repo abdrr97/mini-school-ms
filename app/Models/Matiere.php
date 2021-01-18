@@ -21,6 +21,9 @@ class Matiere extends Model
 
     public function etudiants()
     {
-        return $this->belongsToMany(Etudiant::class);
+        return $this
+            ->belongsToMany(Etudiant::class)
+            ->withTimestamps()
+            ->as('matiere_etudiant');
     }
 }

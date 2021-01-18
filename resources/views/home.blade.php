@@ -6,8 +6,8 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <h4>Etudiant</h4>
-                    <span>NAN</span>
+                    <h5><a href="{{ route('etudiant.list') }}">Etudiant</a></h5>
+                    <span>{{ App\Models\Etudiant::count() }}</span>
                 </div>
             </div>
         </div>
@@ -29,7 +29,30 @@
         </div>
     </div>
 
-    <div class="col-12 my-3">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Matiere</th>
+                <th>Etudiant</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($data['matiere'] as $matiere)
+            <tr>
+                <td>{{ $matiere->nom }}</td>
+                <td>
+                    <ul>
+                        @foreach($matiere->etudiants as $etudiant)
+                        <li>{{ $etudiant->full_name }} || <small>{{ $etudiant->matiere_etudiant->created_at }}</small></li>
+                        @endforeach
+                    </ul>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+    <!-- <div class="col-12 my-3">
         <div class="card">
             <div class="col-md-6 my-5">
                 <form class="d-flex flex-row justify-content-around" action="{{ route('home.search') }}" method="post">
@@ -113,6 +136,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 @endsection
