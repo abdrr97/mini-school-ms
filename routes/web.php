@@ -28,7 +28,7 @@ Route::get('/', function ()
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::post('/home', [HomeController::class, 'search'])->name('home.search');
 
-Route::prefix('/professeurs/')->group(function ()
+Route::prefix('/professeurs/')->middleware('auth')->group(function ()
 {
     Route::get('', [ProfesseurController::class, 'index'])->name('professeur.list');
     Route::get('create', [ProfesseurController::class, 'create'])->name('professeur.create');
@@ -39,7 +39,7 @@ Route::prefix('/professeurs/')->group(function ()
     Route::get('{id}', [ProfesseurController::class, 'show'])->name('professeur.show');
 });
 
-Route::prefix('/matieres/')->group(function ()
+Route::prefix('/matieres/')->middleware('auth')->group(function ()
 {
     Route::get('', [MatiereController::class, 'index'])->name('matiere.list');
     Route::get('create', [MatiereController::class, 'create'])->name('matiere.create');
@@ -47,9 +47,11 @@ Route::prefix('/matieres/')->group(function ()
     Route::get('{id}/edit', [MatiereController::class, 'edit'])->name('matiere.edit');
     Route::put('{id}/edit', [MatiereController::class, 'update'])->name('matiere.update');
     Route::delete('{id}', [MatiereController::class, 'destroy'])->name('matiere.delete');
+    Route::get('{id}/students', [MatiereController::class, 'attaching_students'])->name('matiere.attach');
+    Route::put('{id}/students', [MatiereController::class, 'attach'])->name('matiere.attach');
 });
 
-Route::prefix('/etudiants/')->group(function ()
+Route::prefix('/etudiants/')->middleware('auth')->group(function ()
 {
     Route::get('', [EtudiantController::class, 'index'])->name('etudiant.list');
     Route::get('create', [EtudiantController::class, 'create'])->name('etudiant.create');

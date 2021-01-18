@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Etudiant;
 use App\Models\Matiere;
 use Illuminate\Http\Request;
 
 class MatiereController extends Controller
 {
-    public function __construct() {
-        $this->middleware('auth');
-    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,11 +17,25 @@ class MatiereController extends Controller
     public function index()
     {
         $matiere = new Matiere();
-        $matieres = $matiere->orderBy('created_at','DESC')->paginate(10);
+        $matieres = $matiere->orderBy('created_at', 'DESC')->paginate(10);
 
         return view('matiere.index', compact('matieres'));
     }
 
+    public function attaching_students($id)
+    {
+        // dd($id);
+        $matiere = Matiere::findOrFail($id);
+        return view('matiere.attaching_students', compact('matiere'));
+    }
+
+    public function attach($id)
+    {
+        $etudiants = request()->etudiants;
+        $matiere = Matiere::findOrFail($id);
+        $matiere->etudiants()->sync($etudiants);
+        return redirect()->route('home');
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -75,7 +88,7 @@ class MatiereController extends Controller
             'prix' => 'required',
         ]);
         Matiere::findOrFail($id)->update($data);
-        return redirect()->route('matiere.list')->with('success','matiere a ete modifie');
+        return redirect()->route('matiere.list')->with('success', 'matiere a ete modifie');
     }
 
     /**
@@ -87,6 +100,6 @@ class MatiereController extends Controller
     public function destroy($id)
     {
         Matiere::findOrFail($id)->delete();
-        return redirect()->route('matiere.list')->with('success','matiere a ete supprime');
+        return redirect()->route('matiere.list')->with('success', 'matiere a ete supprime');
     }
 }

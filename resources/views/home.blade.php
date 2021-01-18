@@ -27,32 +27,10 @@
                 </div>
             </div>
         </div>
+
     </div>
 
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Matiere</th>
-                <th>Etudiant</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($data['matiere'] as $matiere)
-            <tr>
-                <td>{{ $matiere->nom }}</td>
-                <td>
-                    <ul>
-                        @foreach($matiere->etudiants as $etudiant)
-                        <li>{{ $etudiant->full_name }} || <small>{{ $etudiant->matiere_etudiant->created_at }}</small></li>
-                        @endforeach
-                    </ul>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <!-- <div class="col-12 my-3">
+    <div class="col-12 my-3">
         <div class="card">
             <div class="col-md-6 my-5">
                 <form class="d-flex flex-row justify-content-around" action="{{ route('home.search') }}" method="post">
@@ -136,6 +114,43 @@
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
+
+    <div class="col-12 my-3">
+        <div class="card">
+            <div class="col-md-6 my-5">
+                <h3>Etudiants associe au Matiers</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered ">
+                    <thead>
+                        <tr>
+                            <th>Matiere</th>
+                            <th>Etudiant</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($data['matiere'] as $matiere)
+                        <tr>
+                            <td>{{ $matiere->nom }}</td>
+                            <td>
+                                <ul>
+                                    @foreach($matiere->etudiants as $etudiant)
+                                    <li><small>{{ $etudiant->id }}</small> {{ $etudiant->full_name }} <em><small>{{ $etudiant->matiere_etudiant->created_at }}</small></em></li>
+                                    @endforeach
+                                </ul>
+                            </td>
+                            <td><a href="{{ route('matiere.attach',['id'=>$matiere->id]) }}">Attach student to this class</a></td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        {{ $data['matiere']->links() }}
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

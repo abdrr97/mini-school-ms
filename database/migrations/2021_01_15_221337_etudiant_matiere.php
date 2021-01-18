@@ -17,6 +17,7 @@ class EtudiantMatiere extends Migration
         {
             $table->foreignId('etudiant_id')->constrained();
             $table->foreignId('matiere_id')->constrained();
+            $table->primary(['matiere_id', 'etudiant_id']);
             $table->timestamps();
         });
     }

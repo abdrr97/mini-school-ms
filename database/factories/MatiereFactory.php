@@ -23,7 +23,7 @@ class MatiereFactory extends Factory
     {
         $matieres = ['maths', 'physic', 'geo', 'science', 'algebre', 'other'];
         return [
-            'nom' => $this->faker->randomElement($matieres),
+            'nom' => $this->faker->word,
             'prix' => ($this->faker->randomDigit + 1) * 10,
         ];
     }
