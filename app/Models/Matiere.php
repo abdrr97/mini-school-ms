@@ -21,6 +21,6 @@ class Matiere extends Model
 
     public function etudiants()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(Etudiant::class);
     }
 }

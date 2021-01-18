@@ -24,7 +24,7 @@ class ProfesseurFactory extends Factory
         return [
             'nom_complet' => $this->faker->name,
             'address' => $this->faker->unique()->address,
-            'date_naissence' => now(),
+            'date_naissence' => $this->faker->dateTime,
             'genre' => $this->faker->randomElement(['Male', 'Female']),
             'email' => $this->faker->unique()->safeEmail,
             'tele' => $this->faker->unique()->phoneNumber,
