@@ -20,7 +20,7 @@ class ProfesseurController extends Controller
     public function index()
     {
         $professeur = new Professeur();
-        $profs = $professeur->orderBy('created_at', 'DESC')->paginate(4);
+        $profs = $professeur->orderBy('created_at', 'DESC')->paginate(10);
 
         return view('professeur.index', compact('profs'));
     }

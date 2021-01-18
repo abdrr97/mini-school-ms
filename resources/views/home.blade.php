@@ -73,6 +73,11 @@
                             </tr>
                             @endforeach
                         </tbody>
+                        <tfoot>
+                            @if(!empty($data['profs']->first()))
+                            {{ $data['profs']->links() }}
+                            @endif
+                        </tfoot>
                     </table>
                 </div>
                 <div class="col-md-4">
@@ -99,6 +104,11 @@
                             </tr>
                             @endforeach
                         </tbody>
+                        <tfoot>
+                            @if(!empty($data['matiere']->first()))
+                            {{ $data['matiere']->links() }}
+                            @endif
+                        </tfoot>
                     </table>
                 </div>
             </div>

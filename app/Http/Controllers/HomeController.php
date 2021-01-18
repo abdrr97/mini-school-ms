@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Matiere;
 use App\Models\Professeur;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 use function PHPUnit\Framework\isEmpty;
@@ -28,8 +29,8 @@ class HomeController extends Controller
     public function index()
     {
         $professeur = new Professeur();
-        $profs = $professeur->orderBy('created_at', 'DESC')->get();
-        $matiere = Matiere::all();
+        $profs = $professeur->orderBy('created_at', 'DESC')->paginate(10);
+        $matiere = Matiere::paginate(10);
 
         $data = [
             'profs' => $profs,
@@ -40,26 +41,22 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
-        $matiere = Matiere::all();
         $search_key =  $request->search;
-        if (isset($search_key))
+        $profs = new Collection([]);
+        $mq = new Collection([]);
+
+        if (!empty($search_key))
         {
             $mq = Matiere::where('nom', 'LIKE', '%' . $search_key . '%')
                 ->orWhere('prix', 'LIKE', '%' . $search_key . '%')
-                ->get();
+                ->paginate(10);
             $profs = Professeur::where('nom_complet', 'LIKE', '%' . $search_key . '%')
                 ->orWhere('email', 'LIKE', '%' . $search_key . '%')
-                ->get();
-
-            $data = [
-                'profs' => $profs,
-                'matiere' => $mq
-            ];
-            return view('home', compact('data'));
+                ->paginate(10);
         }
         $data = [
-            'profs' => [],
-            'matiere' => $matiere
+            'profs' => $profs,
+            'matiere' => $mq
         ];
         return view('home', compact('data'));
     }
