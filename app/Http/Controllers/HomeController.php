@@ -30,7 +30,7 @@ class HomeController extends Controller
     {
         $professeur = new Professeur();
         $profs = $professeur->orderBy('created_at', 'DESC')->paginate(10);
-        $matiere = Matiere::with('etudiants')->paginate(10);
+        $matiere = Matiere::with('etudiants')->paginate(5);
 
         $data = [
             'profs' => $profs,
