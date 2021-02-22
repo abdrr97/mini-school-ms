@@ -4,23 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Matiere;
 use App\Models\Professeur;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
-
-use function PHPUnit\Framework\isEmpty;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Show the application dashboard.
      *
@@ -28,36 +14,46 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $professeur = new Professeur();
-        $profs = $professeur->orderBy('created_at', 'DESC')->paginate(10);
-        $matiere = Matiere::with('etudiants')->paginate(5);
+        $profs = Professeur::orderBy('created_at', 'DESC')
+            ->latest()
+            ->paginate();
+        $matieres = Matiere::with('etudiants')
+            ->latest()
+            ->paginate();
 
-        $data = [
+        return view('home', [
             'profs' => $profs,
-            'matiere' => $matiere,
-        ];
-        return view('home', compact('data'));
+            'matieres' => $matieres
+        ]);
     }
 
-    public function search(Request $request)
+    public function search()
     {
-        $search_key =  $request->search;
-        $profs = new Collection([]);
-        $mq = new Collection([]);
+        $matieres = Matiere::with(['etudiants'])
+            ->when(request('search'), function ($query)
+            {
+                $search = request('search');
+                $query->orWhere('nom', 'LIKE', "%{$search}%")
+                    ->orWhere('prix', 'LIKE', "%{$search}%")
+                    ->orWhereHas('etudiants', function ($query) use ($search)
+                    {
+                        $query->where('full_name', 'LIKE', "%{$search}%");
+                    });
+            })
+            ->latest()
+            ->paginate();
 
-        if (!empty($search_key))
+        $profs = Professeur::when(request('search'), function ($query)
         {
-            $mq = Matiere::where('nom', 'LIKE', '%' . $search_key . '%')
-                ->orWhere('prix', 'LIKE', '%' . $search_key . '%')
-                ->paginate(10);
-            $profs = Professeur::where('nom_complet', 'LIKE', '%' . $search_key . '%')
-                ->orWhere('email', 'LIKE', '%' . $search_key . '%')
-                ->paginate(10);
-        }
-        $data = [
+            $search = request('search');
+            $query->orWhere('nom_complet', 'LIKE', "%{$search}%")
+                ->orWhere('email', 'LIKE', "%{$search}%");
+        })
+            ->latest()
+            ->paginate();
+        return view('home', [
             'profs' => $profs,
-            'matiere' => $mq
-        ];
-        return view('home', compact('data'));
+            'matieres' => $matieres
+        ]);
     }
 }
