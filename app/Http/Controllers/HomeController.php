@@ -14,22 +14,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $profs = Professeur::orderBy('created_at', 'DESC')
-            ->latest()
-            ->paginate();
-        $matieres = Matiere::with('etudiants')
-            ->latest()
-            ->paginate();
-
-        return view('home', [
-            'profs' => $profs,
-            'matieres' => $matieres
-        ]);
-    }
-
-    public function search()
-    {
-        $matieres = Matiere::with(['etudiants'])
+        $matieres = Matiere::with(['etudiants' => function ($query)
+        {
+            return $query->select('etudiant_id', 'full_name');
+        }])
             ->when(request('search'), function ($query)
             {
                 $search = request('search');
@@ -40,15 +28,20 @@ class HomeController extends Controller
                         $query->where('full_name', 'LIKE', "%{$search}%");
                     });
             })
+            ->select('id', 'nom')
             ->latest()
             ->paginate();
 
-        $profs = Professeur::when(request('search'), function ($query)
+        $profs = Professeur::with(['matiere' => function ($query)
         {
-            $search = request('search');
-            $query->orWhere('nom_complet', 'LIKE', "%{$search}%")
-                ->orWhere('email', 'LIKE', "%{$search}%");
-        })
+            return $query->select('id', 'nom');
+        }])
+            ->when(request('search'), function ($query)
+            {
+                $search = request('search');
+                $query->orWhere('nom_complet', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%");
+            })
             ->latest()
             ->paginate();
         return view('home', [

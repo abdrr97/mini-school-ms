@@ -28,8 +28,7 @@ Route::get('/', function ()
 Route::middleware('auth')->group(function ()
 {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::post('/home', [HomeController::class, 'search'])->name('home.search');
-
+    Route::post('/home', [HomeController::class, 'index'])->name('home.search');
 
     Route::prefix('/professeurs/')->group(function ()
     {

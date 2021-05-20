@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5><a href="{{ route('etudiant.list') }}">Etudiant</a></h5>
-                    {{-- <span>{{ App\Models\Etudiant::count() }}</span> --}}
+                    <span>{{ App\Models\Etudiant::count() }}</span>
                 </div>
             </div>
         </div>
@@ -15,7 +15,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5><a href="{{ route('matiere.list') }}">Matieres</a></h5>
-                    {{-- <span>{{ App\Models\Matiere::count() }}</span> --}}
+                    <span>{{ App\Models\Matiere::count() }}</span>
                 </div>
             </div>
         </div>
@@ -23,7 +23,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5><a href="{{ route('professeur.list') }}">Professeurs</a></h5>
-                    {{-- <span>{{ App\Models\Professeur::count() }}</span> --}}
+                    <span>{{ App\Models\Professeur::count() }}</span>
                 </div>
             </div>
         </div>
